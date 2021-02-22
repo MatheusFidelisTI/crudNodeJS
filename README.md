@@ -1,5 +1,3 @@
-# med-prev
-
 ### Iniciar
 
 npm start
