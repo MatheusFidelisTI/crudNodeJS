@@ -1,0 +1,48 @@
+const request = require('supertest')
+const app = require('../app')
+const pessoaDados = require('./pessoaDados')
+
+describe('Post Criar Usuario', () => {
+  it('Deve ser criado um novo usuario PF (caminho feliz)', async () => {
+    const res = await request(app)
+      .post('/api/')
+      .send(pessoaDados.pessoaFisica)
+    expect(res.statusCode).toEqual(201)
+    expect(res.body).toHaveProperty('_id')
+  })
+  it('Deve ser criado um novo usuario PJ (caminho feliz)', async () => {
+    const res = await request(app)
+      .post('/api/')
+      .send(pessoaDados.pessoaJuridica)
+    expect(res.statusCode).toEqual(201)
+    expect(res.body).toHaveProperty('_id')
+  })
+  it('Deve ser criado um novo usuario PF com multiplos endereços (caminho feliz)', async () => {
+    const res = await request(app)
+      .post('/api/')
+      .send(pessoaDados.pessoaFisicaMultiplosEnderecos)
+    expect(res.statusCode).toEqual(201)
+    expect(res.body).toHaveProperty('_id')
+  })
+  it('Deve ser criado um novo usuario PJ com multiplos endereços (caminho feliz)', async () => {
+    const res = await request(app)
+      .post('/api/')
+      .send(pessoaDados.pessoaJuridicaMultiplosEnderecos)
+    expect(res.statusCode).toEqual(201)
+    expect(res.body).toHaveProperty('_id')
+  })
+  it('Não deve ser criado um novo usuario PF com dados incorretos ', async () => {
+    const res = await request(app)
+      .post('/api/')
+      .send(pessoaDados.pessoaFisicaDadosIncorretos)
+    expect(res.statusCode).toEqual(400)
+    expect(res.body).toHaveProperty('errors')
+  })
+  it('Não deve ser criado um novo usuario PJ com dados incorretos', async () => {
+    const res = await request(app)
+      .post('/api/')
+      .send(pessoaDados.pessoaJuridicaDadosIncorretos)
+    expect(res.statusCode).toEqual(400)
+    expect(res.body).toHaveProperty('errors')
+  })
+})
